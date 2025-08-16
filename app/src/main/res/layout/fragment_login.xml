@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.auth.view.LoginFragment">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="66dp"
+        android:gravity="center_horizontal"
+        android:lineHeight="32sp"
+        android:text="@string/sign_in_to_your_account"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal"
+        android:lineHeight="16.8sp"
+        android:text="@string/enter_your_email_and_password_to_log_in"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailField"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="50dp"
+        android:elevation="2dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subtitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_email"
+            android:inputType="textEmailAddress"
+            android:lineHeight="19.6sp"
+            android:padding="14dp"
+            android:textColor="#FF1A1C1E"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordField"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="40dp"
+        android:elevation="2dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailField"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:lineHeight="19.6sp"
+            android:padding="14dp"
+            android:textColor="#FF1A1C1E"
+            android:textSize="14sp"
+            tools:text="12345" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:includeFontPadding="true"
+        android:lineHeight="19.6sp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="14dp"
+        android:text="@string/log_in"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:backgroundTint="#1D61E7"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/passwordField"
+        app:layout_constraintStart_toStartOf="@+id/passwordField"
+        app:layout_constraintTop_toBottomOf="@id/passwordField" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loader"
+        style="@style/Widget.Material3.CircularProgressIndicator.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+        android:visibility="gone"
+        app:indicatorColor="#1D61E7"
+        app:indicatorDirectionCircular="clockwise"
+        app:indicatorTrackGapSize="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackColor="#1D61E7" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
