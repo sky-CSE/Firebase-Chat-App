@@ -57,8 +57,8 @@ dependencies {
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:34.1.0"))
 
-    // Add the dependency for the Firebase Authentication library
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 
     // UI Components, States + StateHolders
     implementation(libs.androidx.navigation.fragment.ktx)
