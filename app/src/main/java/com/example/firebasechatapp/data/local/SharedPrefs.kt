@@ -8,6 +8,7 @@ class SharedPrefs(context: Context) {
     companion object {
         private const val PREF_NAME = "app_preference"
 
+        private const val CURRENT_USER_ID = "current_user_id"
         private const val USER_LOGIN_STATUS = "user_login_status"
 
     }
@@ -24,5 +25,9 @@ class SharedPrefs(context: Context) {
     fun clearAll() = editor.clear().apply()
 
     fun isUserLoggedIn() = getBoolean(USER_LOGIN_STATUS)
+
     fun setUserLoggedIn(loggedIn: Boolean) = setBoolean(USER_LOGIN_STATUS, loggedIn)
+    fun saveUser(uid: String) {
+        setString(CURRENT_USER_ID, uid)
+    }
 }

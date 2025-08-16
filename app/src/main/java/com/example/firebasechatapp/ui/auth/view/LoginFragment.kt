@@ -1,6 +1,7 @@
-package co.gladminds.logistics.ui.auth.view
+package com.example.firebasechatapp.ui.auth.view
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.firebasechatapp.data.local.SharedPrefs
 import com.example.firebasechatapp.databinding.FragmentLoginBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.android.ext.android.inject
 
 class LoginFragment : Fragment() {
@@ -20,61 +22,74 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedPrefs: SharedPrefs by inject()
-
     private val auth by lazy { Firebase.auth }
+    private val firestore by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    ): View = FragmentLoginBinding.inflate(inflater, container, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (sharedPrefs.isUserLoggedIn()) {
-            navigateToUsers()
-        }
+        // Skip login if already logged in
+//        if (sharedPrefs.isUserLoggedIn()) navigateToUsers()
 
         handleUiEvents()
     }
 
-    private fun handleUiEvents() {
-        binding.loginBtn.setOnClickListener {
-            val email = binding.emailField.editText?.text?.trim().toString()
-            val password = binding.passwordField.editText?.text.toString()
+    private fun handleUiEvents() = with(binding) {
+        loginBtn.setOnClickListener {
+            val email = emailField.editText?.text?.trim().toString()
+            val password = passwordField.editText?.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Email & Password required", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (!isValidInput(email, password)) return@setOnClickListener
 
             loginUser(email, password)
         }
     }
 
+    private fun isValidInput(email: String, password: String): Boolean {
+        if (email.isEmpty() || password.isEmpty()) {
+            showToast("Email & Password required"); return false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showToast("Invalid email format"); return false
+        }
+        return true
+    }
+
     private fun loginUser(email: String, password: String) {
+        showLoader(true)
         auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
+            .addOnSuccessListener { result ->
+                val uid = result.user?.uid ?: return@addOnSuccessListener
+                sharedPrefs.saveUser(uid)
                 navigateToUsers()
             }
             .addOnFailureListener {
-                // If user not found, sign up then sign in
                 createUser(email, password)
             }
+            .addOnCompleteListener { showLoader(false) }
     }
 
     private fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                navigateToUsers()
+            .addOnSuccessListener { result ->
+                val uid = result.user?.uid ?: return@addOnSuccessListener
+                val userMap = mapOf("uid" to uid, "email" to email, "password" to password)
+
+                firestore.collection("users").document(uid)
+                    .set(userMap)
+                    .addOnSuccessListener {
+                        sharedPrefs.saveUser(uid)
+                        navigateToUsers()
+                    }
+                    .addOnFailureListener { e -> showToast("Failed to save user: ${e.message}") }
             }
-            .addOnFailureListener { e ->
-                showToast(e.message ?: "Error")
-            }
+            .addOnFailureListener { e -> showToast(e.message ?: "Error") }
     }
 
     private fun navigateToUsers() {
@@ -85,12 +100,11 @@ class LoginFragment : Fragment() {
         binding.loader.isVisible = show
     }
 
-    private fun showToast(message: String) {
+    private fun showToast(message: String) =
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
 
     override fun onDestroyView() {
-        _binding = null
+        _binding = null;
         super.onDestroyView()
     }
 }
