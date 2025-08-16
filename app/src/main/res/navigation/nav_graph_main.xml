@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/usersFragment"
-        android:name="com.example.firebasechatapp.UsersFragment"
+        android:name="com.example.firebasechatapp.ui.home.UsersFragment"
         android:label="fragment_users"
         tools:layout="@layout/fragment_users">
         <action

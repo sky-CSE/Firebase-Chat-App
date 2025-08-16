@@ -35,7 +35,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Skip login if already logged in
-//        if (sharedPrefs.isUserLoggedIn()) navigateToUsers()
+        if (sharedPrefs.getUser() != null) navigateToUsers()
 
         handleUiEvents()
     }
@@ -56,7 +56,8 @@ class LoginFragment : Fragment() {
             showToast("Email & Password required"); return false
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showToast("Invalid email format"); return false
+            binding.emailField.error = "Invalid email"
+            return false
         }
         return true
     }
