@@ -14,6 +14,7 @@ import com.example.firebasechatapp.data.model.User
 import com.example.firebasechatapp.databinding.FragmentUsersBinding
 import com.example.firebasechatapp.databinding.ListItemUserBinding
 import com.example.firebasechatapp.utils.CommonAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -44,10 +45,28 @@ class UsersFragment : Fragment() {
 
     private fun handleUiEvents() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            requireActivity().finish()
+            confirmExit()
         }
 
         binding.logoutBtn.setOnClickListener {
+            confirmLogout()
+        }
+    }
+
+    private fun confirmExit() {
+        showConfirmationDialog(
+            title = "Exit",
+            message = "Are you sure you want to exit?"
+        ) {
+            (requireActivity() as MainActivity).finish()
+        }
+    }
+
+    private fun confirmLogout() {
+        showConfirmationDialog(
+            title = "Logout",
+            message = "Are you sure you want to logout?"
+        ) {
             logout()
         }
     }
@@ -98,4 +117,23 @@ class UsersFragment : Fragment() {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
             }
     }
+
+    private fun showConfirmationDialog(
+        title: String,
+        message: String,
+        onConfirm: () -> Unit
+    ) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                onConfirm()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
 }
