@@ -24,7 +24,11 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.firebasechatapp.ChatFragment"
+        android:name="com.example.firebasechatapp.ui.chat.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="user"
+            app:argType="com.example.firebasechatapp.data.model.User" />
+    </fragment>
 </navigation>

@@ -65,7 +65,7 @@ class UsersFragment : Fragment() {
                     userEmail.text = item.email
 
                     root.setOnClickListener {
-                        findNavController().navigate(UsersFragmentDirections.actionUsersFragmentToChatFragment())
+                        findNavController().navigate(UsersFragmentDirections.actionUsersFragmentToChatFragment(item))
                     }
                 }
             }
