@@ -1,4 +1,4 @@
-package com.example.firebasechatapp.ui.auth.view
+package com.example.firebasechatapp.ui.auth
 
 import android.os.Bundle
 import android.util.Patterns
