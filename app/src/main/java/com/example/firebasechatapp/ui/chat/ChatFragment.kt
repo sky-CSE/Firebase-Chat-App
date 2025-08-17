@@ -1,17 +1,17 @@
 package com.example.firebasechatapp.ui.chat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firebasechatapp.data.local.SharedPrefs
 import com.example.firebasechatapp.data.model.Message
 import com.example.firebasechatapp.databinding.FragmentChatBinding
+import com.example.firebasechatapp.utils.ViewUtil.showError
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import org.koin.android.ext.android.inject
@@ -72,25 +72,28 @@ class ChatFragment : Fragment() {
             val text = binding.messageField.editText!!.text.toString().trim()
             if (text.isEmpty()) return@setOnClickListener
 
-            val msg = Message(
-                senderId = currentUid,
-                receiverId = receiverId,
-                text = text,
-                timeStamp = System.currentTimeMillis()
-            )
-
-            firestore.collection("chats")
-                .document(chatId)
-                .collection("messages")
-                .add(msg)
-                .addOnSuccessListener {
-                    binding.messageField.editText!!.text.clear()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT)
-                        .show()
-                }
+            sendMessage(text)
         }
+    }
+
+    private fun sendMessage(text: String) {
+        val msg = Message(
+            senderId = currentUid,
+            receiverId = receiverId,
+            text = text,
+            timeStamp = System.currentTimeMillis()
+        )
+
+        firestore.collection("chats")
+            .document(chatId)
+            .collection("messages")
+            .add(msg)
+            .addOnSuccessListener {
+                binding.messageField.editText!!.text.clear()
+            }
+            .addOnFailureListener { e ->
+                showError(e.message ?: "Error")
+            }
     }
 
     private fun listenForMessages() {
@@ -100,13 +103,12 @@ class ChatFragment : Fragment() {
             .orderBy("timeStamp", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                    showError(e.message ?: "Error")
                     return@addSnapshotListener
                 }
 
                 val messages = snapshot?.toObjects(Message::class.java) ?: emptyList()
                 chatAdapter.submitList(messages)
-                binding.chats.scrollToPosition(messages.size - 1)
             }
     }
 
