@@ -55,44 +55,13 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Firebase
-    // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:34.1.0"))
-
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
 
-    // UI Components, States + StateHolders
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
     // Navigation
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
 
     // DI
     implementation(libs.koin.android)
-
-    // Networking
-    implementation(libs.retrofit.moshi)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
-    implementation(libs.retrofit.coroutines.adapter)
-    implementation(libs.gson)
-    implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.okhttp)
-
-    // Coroutines
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.androidx.annotation)
-
-    // Debugging
-    debugImplementation(libs.chucker.debug)
-    releaseImplementation(libs.chucker.release)
-
-    // Permissions
-    implementation(libs.easy.permissions)
-
-    // Swipe to refresh
-    implementation(libs.androidx.swiperefreshlayout)
-
 }
