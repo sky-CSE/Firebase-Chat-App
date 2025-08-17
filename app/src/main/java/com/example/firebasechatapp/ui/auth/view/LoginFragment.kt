@@ -1,22 +1,19 @@
 package com.example.firebasechatapp.ui.auth.view
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.firebasechatapp.data.local.SharedPrefs
 import com.example.firebasechatapp.databinding.FragmentLoginBinding
-import com.google.android.material.snackbar.Snackbar
+import com.example.firebasechatapp.utils.ViewUtil.hideKeyboard
+import com.example.firebasechatapp.utils.ViewUtil.showError
+import com.example.firebasechatapp.utils.ViewUtil.showSuccess
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.auth
@@ -148,32 +145,8 @@ class LoginFragment : Fragment() {
         binding.loader.isVisible = show
     }
 
-    private fun showError(message: String) {
-        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), android.R.color.holo_red_light))
-            .setTextColor(Color.WHITE)
-            .show()
-    }
-
-    private fun showSuccess(message: String) {
-        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(requireContext(), android.R.color.holo_green_light))
-            .setTextColor(Color.WHITE)
-            .show()
-    }
-
-    private fun showToast(message: String) =
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-
     override fun onDestroyView() {
         _binding = null;
         super.onDestroyView()
-    }
-
-    fun Fragment.hideKeyboard() {
-        view?.let { v ->
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(v.windowToken, 0)
-        }
     }
 }

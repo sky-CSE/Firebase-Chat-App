@@ -14,7 +14,7 @@ import com.example.firebasechatapp.data.model.User
 import com.example.firebasechatapp.databinding.FragmentUsersBinding
 import com.example.firebasechatapp.databinding.ListItemUserBinding
 import com.example.firebasechatapp.utils.CommonAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.firebasechatapp.utils.ViewUtil.showConfirmationDialog
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -55,6 +55,7 @@ class UsersFragment : Fragment() {
 
     private fun confirmExit() {
         showConfirmationDialog(
+            context = requireContext(),
             title = "Exit",
             message = "Are you sure you want to exit?"
         ) {
@@ -64,6 +65,7 @@ class UsersFragment : Fragment() {
 
     private fun confirmLogout() {
         showConfirmationDialog(
+            context = requireContext(),
             title = "Logout",
             message = "Are you sure you want to logout?"
         ) {
@@ -116,24 +118,6 @@ class UsersFragment : Fragment() {
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
             }
-    }
-
-    private fun showConfirmationDialog(
-        title: String,
-        message: String,
-        onConfirm: () -> Unit
-    ) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("Yes") { dialog, _ ->
-                dialog.dismiss()
-                onConfirm()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
     }
 
 }
