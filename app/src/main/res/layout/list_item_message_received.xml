@@ -5,8 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
+    android:layout_marginHorizontal="6dp"
     android:layout_gravity="start"
-    android:padding="4dp"
     app:cardBackgroundColor="@android:color/system_accent1_10"
     app:cardCornerRadius="16dp">
 
@@ -35,6 +35,7 @@
             android:textColor="@android:color/darker_gray"
             android:gravity="start"
             android:textSize="10sp"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/messageText"
             tools:text="2:38 AM" />
