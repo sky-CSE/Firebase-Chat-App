@@ -90,6 +90,7 @@ class ChatFragment : Fragment() {
             .add(msg)
             .addOnSuccessListener {
                 binding.messageField.editText!!.text.clear()
+                binding.chats.smoothScrollToPosition(maxOf(0, chatAdapter.itemCount - 1))
             }
             .addOnFailureListener { e ->
                 showError(e.message ?: "Error")
@@ -109,6 +110,10 @@ class ChatFragment : Fragment() {
 
                 val messages = snapshot?.toObjects(Message::class.java) ?: emptyList()
                 chatAdapter.submitList(messages)
+
+                if (messages.isNotEmpty()) {
+                    binding.chats.post { binding.chats.scrollToPosition(messages.size - 1) }
+                }
             }
     }
 

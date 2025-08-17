@@ -20,12 +20,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chats"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constrainedHeight="true"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/messageField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:itemCount="13"
+        android:layout_marginBottom="8dp"
+        tools:itemCount="10"
         tools:listitem="@layout/list_item_message_received" />
 
     <com.google.android.material.textfield.TextInputLayout
